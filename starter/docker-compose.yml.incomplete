@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  api-services:
+    build:
+      context: .
+      dockerfile: api-services/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api-services:/app
+    # TODO: Add restart policy
+    # Hint: Choose a policy that restarts the container if it crashes
+    restart: ???
+    
+    # TODO: Add healthcheck
+    # Hint: Ensure the API is responding to HTTP requests
+    healthcheck:
+      ???
+    
+    # TODO: Add resource constraints
+    # Hint: Limit CPU and memory usage
+    deploy:
+      ???
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    # TODO: Add restart policy and healthcheck
+    # Hint: Use pg_isready to check PostgreSQL availability
+    
+    # TODO: Add resource constraints
+    # Hint: Consider appropriate limits for a database
+
+  webserver:
+    image: apache/airflow:2.9.1
+    # TODO: Add appropriate restart policy
+    restart: ???
+    # TODO: Add dependency condition to ensure postgres is healthy before starting
+    depends_on:
+      ???
+    # TODO: Complete the environment variables
+    # Hint: Configure Airflow executor, connection strings, and disable examples
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: ???
+      # Add more environment variables here
+      
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+    ports:
+      - "8080:8080"
+    command: webserver
+    # TODO: Add healthcheck for the webserver
+    # Hint: Use curl to check the /health endpoint
+    healthcheck:
+      ???
+    
+    # TODO: Add resource constraints
+    # Hint: Consider appropriate limits for the Airflow webserver
+
+  scheduler:
+    image: apache/airflow:2.9.1
+    # TODO: Add appropriate restart policy
+    restart: ???
+    # TODO: Add dependency condition to ensure postgres is healthy before starting
+    depends_on:
+      ???
+    # TODO: Complete the environment variables
+    # Hint: Match webserver environment variables and add scheduler-specific settings
+    environment:
+      ???
+    
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+    command: scheduler
+    # TODO: Add healthcheck for the scheduler
+    # Hint: Use airflow jobs check command
+    healthcheck:
+      ???
+    
+    # TODO: Add resource constraints
+    # Hint: Consider appropriate limits for the Airflow scheduler
+
+# TODO: Define volumes
+volumes:
+  postgres-db-volume:
+  # Add any additional volumes if needed

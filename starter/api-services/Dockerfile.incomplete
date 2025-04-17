@@ -1,0 +1,35 @@
+# TODO: Select an appropriate base image
+# Hint: Choose a slim Python image that matches your application needs
+FROM ???
+
+# TODO: Set up the working directory
+# Hint: Define where your app code will live in the container
+WORKDIR ???
+
+# Install system dependencies
+RUN apt update && apt install -y gcc python3-dev
+
+# TODO: Copy and install requirements
+# Hint: Follow Docker best practices for layer caching
+COPY ???
+RUN ???
+
+# TODO: Copy application code
+# Hint: Consider ordering for caching efficiency
+COPY ???
+
+# TODO: Set environment variables for Python
+# Hint: Consider settings for production use
+ENV ???
+
+# TODO: Expose the port the API runs on
+# Hint: The API runs on port 5000
+EXPOSE ???
+
+# TODO: Add a healthcheck
+# Hint: Ensure the API is responding to HTTP requests
+HEALTHCHECK ???
+
+# TODO: Set the command to run the application
+# Hint: Use an array format for better signal handling
+CMD ???
